@@ -9,5 +9,10 @@ namespace ERP_APP.Data
             : base(options)
         {
         }
+        public DbSet<BaseEntity> BaseEntities { get; set; }
+        public DbSet<WorkOrder> WorkOrders { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<JobType> JobTypes { get; set; }
+
     }
 }
