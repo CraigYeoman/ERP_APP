@@ -9,15 +9,17 @@ namespace ERP_APP.Data
         public string? Description { get; set; }
         [ForeignKey("VendorId")]
         public Vendor? Vendor { get; set; }
-        public int VendorID { get; set; }
-
-        public int CustomerPrice { get; set; }
-        public int CostOfGood { get; set; }
+        public int VendorId { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal CustomerPrice { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal CostOfGood { get; set; }
         public string? PartNumber { get; set; }
         public string? Manufacturer { get; set; }
         [ForeignKey("PartCategoryId")]
         public PartCategory? PartCategory { get; set; }
-        public int PartCategoryID { get; set; }
+        public int PartCategoryId { get; set; }
         public ICollection<WorkOrderPart>? WorkOrderParts { get; set; }
+        
     }
 }

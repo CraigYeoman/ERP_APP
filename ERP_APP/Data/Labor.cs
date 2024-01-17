@@ -5,7 +5,8 @@ namespace ERP_APP.Data
     public class Labor : BaseEntity
     {
         public string? Name { get; set; }
-        public int Price { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Price { get; set; }
 
         [ForeignKey("LaborCategoryId")]
         public LaborCategory? LaborCategory { get; set; }

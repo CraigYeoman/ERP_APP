@@ -1,4 +1,6 @@
-﻿namespace ERP_APP.Data
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ERP_APP.Data
 {
     public class Accessories : BaseEntity
     {

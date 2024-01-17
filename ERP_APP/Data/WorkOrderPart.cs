@@ -1,6 +1,6 @@
 ﻿namespace ERP_APP.Data
 {
-    public class WorkOrderPart
+    public class WorkOrderPart : BaseEntity
     {
         public int WorkOrderId { get; set; }
         public int PartId { get; set; }

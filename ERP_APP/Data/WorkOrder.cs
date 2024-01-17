@@ -18,13 +18,13 @@ namespace ERP_APP.Data
         public DateTime DueDate { get; set; }
         public DateTime DateReceived { get; set; }
         public DateTime DateFinished { get; set; }
-        public int Deposit { get; set; }
         public bool Complete { get; set; }
         public int WorkOrderNumber { get; set; }
         public string? Notes { get; set; }
         public ICollection<WorkOrderPart>? WorkOrderParts { get; set; }
         public ICollection<WorkOrderLabor>? WorkOrderLabors { get; set; }
         public ICollection<WorkOrderAccessories>? WorkOrderAccessories { get; set; }
+        public ICollection<Payment>? Payments { get; set; }
 
     }
 }
