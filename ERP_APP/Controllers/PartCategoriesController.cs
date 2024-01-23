@@ -6,94 +6,90 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ERP_APP.Data;
-using ERP_APP.Contracts;
-using AutoMapper;
 
 namespace ERP_APP.Controllers
 {
-    public class LaborCategoriesController : Controller
+    public class PartCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILaborCategoriesRepository laborCategoriesRepository;
-        private readonly IMapper mapper;
 
-        public LaborCategoriesController(ILaborCategoriesRepository laborCategoriesRepository, IMapper mapper)
+        public PartCategoriesController(ApplicationDbContext context)
         {
-            this.laborCategoriesRepository = laborCategoriesRepository;
-            this.mapper = mapper;
+            _context = context;
         }
 
-        // GET: LaborCategories
+        // GET: PartCategories
         public async Task<IActionResult> Index()
         {
-            var laborCategories = await laborCategoriesRepository.GetAllAsync();
-            return View(laborCategories);
-
+              return _context.PartCategories != null ? 
+                          View(await _context.PartCategories.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.PartCategories'  is null.");
         }
 
-        // GET: LaborCategories/Details/5
+        // GET: PartCategories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || _context.PartCategories == null)
             {
                 return NotFound();
             }
 
-            var laborCategory = await laborCategoriesRepository.GetAsync(id.Value);
-            if (laborCategory == null)
+            var partCategory = await _context.PartCategories
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (partCategory == null)
             {
                 return NotFound();
             }
 
-            return View(laborCategory);
+            return View(partCategory);
         }
 
-        // GET: LaborCategories/Create
+        // GET: PartCategories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: LaborCategories/Create
+        // POST: PartCategories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,DateCreated,DateModified")] LaborCategory laborCategory)
+        public async Task<IActionResult> Create([Bind("Name,Id,DateCreated,DateModified")] PartCategory partCategory)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(laborCategory);
+                _context.Add(partCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(laborCategory);
+            return View(partCategory);
         }
 
-        // GET: LaborCategories/Edit/5
+        // GET: PartCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.LaborCategories == null)
+            if (id == null || _context.PartCategories == null)
             {
                 return NotFound();
             }
 
-            var laborCategory = await _context.LaborCategories.FindAsync(id);
-            if (laborCategory == null)
+            var partCategory = await _context.PartCategories.FindAsync(id);
+            if (partCategory == null)
             {
                 return NotFound();
             }
-            return View(laborCategory);
+            return View(partCategory);
         }
 
-        // POST: LaborCategories/Edit/5
+        // POST: PartCategories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,DateCreated,DateModified")] LaborCategory laborCategory)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,DateCreated,DateModified")] PartCategory partCategory)
         {
-            if (id != laborCategory.Id)
+            if (id != partCategory.Id)
             {
                 return NotFound();
             }
@@ -102,12 +98,12 @@ namespace ERP_APP.Controllers
             {
                 try
                 {
-                    _context.Update(laborCategory);
+                    _context.Update(partCategory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LaborCategoryExists(laborCategory.Id))
+                    if (!PartCategoryExists(partCategory.Id))
                     {
                         return NotFound();
                     }
@@ -118,49 +114,49 @@ namespace ERP_APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(laborCategory);
+            return View(partCategory);
         }
 
-        // GET: LaborCategories/Delete/5
+        // GET: PartCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.LaborCategories == null)
+            if (id == null || _context.PartCategories == null)
             {
                 return NotFound();
             }
 
-            var laborCategory = await _context.LaborCategories
+            var partCategory = await _context.PartCategories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (laborCategory == null)
+            if (partCategory == null)
             {
                 return NotFound();
             }
 
-            return View(laborCategory);
+            return View(partCategory);
         }
 
-        // POST: LaborCategories/Delete/5
+        // POST: PartCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.LaborCategories == null)
+            if (_context.PartCategories == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.LaborCategories'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.PartCategories'  is null.");
             }
-            var laborCategory = await _context.LaborCategories.FindAsync(id);
-            if (laborCategory != null)
+            var partCategory = await _context.PartCategories.FindAsync(id);
+            if (partCategory != null)
             {
-                _context.LaborCategories.Remove(laborCategory);
+                _context.PartCategories.Remove(partCategory);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LaborCategoryExists(int id)
+        private bool PartCategoryExists(int id)
         {
-          return (_context.LaborCategories?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.PartCategories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
